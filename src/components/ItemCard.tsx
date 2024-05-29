@@ -1,9 +1,18 @@
+import { useState } from 'react';
+import Modal from 'react-modal';
+
+
 type Props = {
   title: string;
   price: number;
   description: string;
   imageSrc: string;
   imageAlt?: string;
+  category: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 };
 
 export const ItemCard = ({
@@ -11,10 +20,34 @@ export const ItemCard = ({
   price,
   description,
   imageSrc,
+  category,
+  rating,
   imageAlt = 'item image',
 }: Props) => {
+
+  const [modaIslOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+  
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  const modalContent = (
+    <div>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        <p>${price}</p>
+        <p>Category: {category}</p>
+        <p>Rating: {rating.rate} ({rating.count})</p>
+        <button onClick={closeModal}>Close</button>
+    </div>
+  );
+
   return (
-    <div className="group relative">
+    <div className="group relative" onClick={openModal}>
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
         <img
           src={imageSrc}
@@ -32,6 +65,16 @@ export const ItemCard = ({
         </div>
         <p className="text-sm font-medium text-gray-900">{price}</p>
       </div>
+
+      <Modal
+        isOpen={modaIslOpen}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+        className="modal"
+        overlayClassName="overlay"
+      >
+        {modalContent}
+      </Modal>
     </div>
   );
 };
