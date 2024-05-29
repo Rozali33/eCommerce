@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store.ts';
 import { setLoggedIn } from '../store/user/userSlice.ts';
@@ -7,10 +7,27 @@ const ProfileBadge = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { email } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+
+  const handleDocumentClick = (event: MouseEvent) => {
+    if (!isOpen || (event.target as HTMLElement).closest('.profile-icon') || (event.target as HTMLElement).closest('.dropdown-content')) {
+      return;
+    }
+
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleDocumentClick);
+    return () => {
+      document.removeEventListener('click', handleDocumentClick);
+    };
+  }, [isOpen]);
+
+
   return (
     <>
       <div
-        className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+        className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 profile-icon"
         onClick={() => setIsOpen(!isOpen)}
       >
         <svg
@@ -29,7 +46,7 @@ const ProfileBadge = () => {
       {isOpen && (
         <div
           id="userDropdown"
-          className="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 top-16"
+          className="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 top-16 dropdown-content"
         >
           <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
             <div className="font-medium truncate">{email}</div>
