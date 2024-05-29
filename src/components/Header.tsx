@@ -163,7 +163,7 @@ export const Header = () => {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Marketplace
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="pages/Error/Error.tsx" className="text-sm font-semibold leading-6 text-gray-900">
             Company
           </a>
         </Popover.Group>
