@@ -15,6 +15,8 @@ type Props = {
   };
 };
 
+Modal.setAppElement('#root')
+
 export const ItemCard = ({
   title,
   price,
@@ -32,21 +34,24 @@ export const ItemCard = ({
   };
   
   const closeModal = () => {
-    setModalIsOpen(false);
+    setModalIsOpen(!modaIslOpen);
   };
 
-  const modalContent = (
+  console.log(modaIslOpen)
+
+  const modalContent = () => (
     <div>
         <h2>{title}</h2>
         <p>{description}</p>
         <p>${price}</p>
         <p>Category: {category}</p>
         <p>Rating: {rating.rate} ({rating.count})</p>
-        <button onClick={closeModal}>Close</button>
+        <button onClick= {() => setModalIsOpen(false)}>Close</button>
     </div>
   );
 
   return (
+    <>
     <div className="group relative" onClick={openModal}>
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
         <img
@@ -66,15 +71,18 @@ export const ItemCard = ({
         <p className="text-sm font-medium text-gray-900">{price}</p>
       </div>
 
-      <Modal
-        isOpen={modaIslOpen}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-        className="modal"
-        overlayClassName="overlay"
-      >
-        {modalContent}
-      </Modal>
+      
     </div>
+
+    <Modal
+    isOpen={modaIslOpen}
+    onRequestClose={closeModal}
+    contentLabel="Example Modal"
+    className="modal"
+    overlayClassName="overlay"
+    >
+    {modalContent()}
+    </Modal>
+    </>
   );
 };
